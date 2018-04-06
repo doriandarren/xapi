@@ -1,6 +1,7 @@
 package com.app.backend.business;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +16,7 @@ import com.app.backend.model.Client;
 @SuppressWarnings("serial")
 @WebServlet(
 	    name = "ApiClientSave",
-	    urlPatterns = {"/_ah/api/client/save"}
+	    urlPatterns = {"/_ah/api/client"}
 	)
 public class ApiClientSave extends HttpServlet {
 
@@ -23,8 +24,10 @@ public class ApiClientSave extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doGet(req, resp);
+		resp.setContentType("text/plain");
+	    resp.setCharacterEncoding("UTF-8");
+
+	    resp.getWriter().print("LLEGAAAAAAA!\r\n");
 	}
 
 	@Override
@@ -33,6 +36,7 @@ public class ApiClientSave extends HttpServlet {
 		Message msg = new Message();
 		Client client = new Client();
 		client.setName(req.getParameter("name"));
+		client.setCreateAt(new Date());
 		client.setDescription(req.getParameter("description"));
 		
 		try {

@@ -12,7 +12,7 @@
 
   <properties>
     <appengine.maven.plugin.version>1.3.2</appengine.maven.plugin.version>
-    <appengine.api.sdk.version>1.9.63</appengine.api.sdk.version>
+    <appengine.api.sdk.version>1.9.59</appengine.api.sdk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -20,9 +20,9 @@
     <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
     
     
+    <datanucleus.jpa.version>3.1.1</datanucleus.jpa.version>
     
-    
-    <endpoints.project.id>api-sis</endpoints.project.id>
+    <endpoints.project.id>api-xapi</endpoints.project.id>
     
   </properties>
 
@@ -37,7 +37,7 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>3.1.0</version>
       <scope>provided</scope>
-    </dependency>
+    </dependency>   
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
       <artifactId>javax.servlet.jsp-api</artifactId>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-api-1.0-sdk</artifactId>
-      <version>1.9.63</version>
+      <version>${appengine.api.sdk.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -56,18 +56,125 @@
       <version>1.2</version>
     </dependency>
 
-    <!-- Test Dependencies -->
+    <!-- Test Dependencies OK -->
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.google.appengine</groupId>
+		<artifactId>appengine-testing</artifactId>
+		<version>${appengine.api.sdk.version}</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.google.appengine</groupId>
+		<artifactId>appengine-api-stubs</artifactId>
+		<version>${appengine.api.sdk.version}</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.google.appengine</groupId>
+		<artifactId>appengine-tools-sdk</artifactId>
+		<version>${appengine.api.sdk.version}</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.google.api-client</groupId>
+		<artifactId>google-api-client-appengine</artifactId>
+		<version>1.23.0</version>
+		<scope>test</scope>
+	</dependency> 
+    
+    
+    
+    
+    <!-- datanucleus -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
+  <groupId>org.datanucleus</groupId>
+  <artifactId>datanucleus-api-jpa</artifactId>
+  <version>${datanucleus.jpa.version}</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-api-jdo -->
+<dependency>
+    <groupId>org.datanucleus</groupId>
+    <artifactId>datanucleus-api-jdo</artifactId>
+    <version>${datanucleus.jpa.version}</version>
+</dependency>
+
+
+
+<dependency><!-- ok -->
+  <groupId>org.datanucleus</groupId>
+  <artifactId>datanucleus-core</artifactId>
+  <version>${datanucleus.jpa.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>com.google.appengine.orm</groupId>
+  <artifactId>datanucleus-appengine</artifactId>
+  <version>2.1.1</version>
+
+  <!-- Need to exclude the enhancer since it interfere with the enhancer plugin. -->
+  <exclusions>
+    <exclusion>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-enhancer</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+
+<dependency>
+  <groupId>javax.jdo</groupId>
+  <artifactId>jdo-api</artifactId>
+  <version>3.0.1</version>
+</dependency>
+
+<dependency>
+  <groupId>org.apache.geronimo.specs</groupId>
+  <artifactId>geronimo-jpa_2.0_spec</artifactId>
+  <version>1.1</version>
+</dependency>
+    
+    
+    <!-- https://mvnrepository.com/artifact/asm/asm -->
+<dependency>
+    <groupId>asm</groupId>
+    <artifactId>asm</artifactId>
+    <version>3.3.1</version>
+</dependency>
+    
+    <!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-rdbms -->
+<dependency>
+    <groupId>org.datanucleus</groupId>
+    <artifactId>datanucleus-rdbms</artifactId>
+    <version>${datanucleus.jpa.version}</version>
+</dependency>
+    
+    <!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-enhancer -->
+<dependency>
+    <groupId>org.datanucleus</groupId>
+    <artifactId>datanucleus-enhancer</artifactId>
+    <version>${datanucleus.jpa.version}</version>
+</dependency>
+    
+    
+    <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>javax.persistence</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+    
+    
   </dependencies>
 
   <build>
     <!-- for hot reload of the web application-->
     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+    <pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -89,6 +196,93 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>${appengine.maven.plugin.version}</version>
       </plugin>
+      
+      
+      
+      
+      <plugin>
+  <groupId>org.datanucleus</groupId>
+  <artifactId>maven-datanucleus-plugin</artifactId>
+  <version>${datanucleus.jpa.version}</version>
+  
+  <configuration>
+    <api>JPA</api>
+    <mappingIncludes>**/entities/*.class</mappingIncludes>
+    <log4jConfiguration>${basedir}/log4j.properties</log4jConfiguration>
+    <verbose>true</verbose>
+    <fork>false</fork>
+  </configuration>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-core</artifactId>
+      <version>${datanucleus.jpa.version}</version>
+    </dependency>
+  </dependencies>
+  
+  <executions>
+    <execution>   
+      <phase>process-classes</phase>
+      <goals>
+        <goal>enhance</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+      
+      
+      <plugin>
+      <groupId>org.eclipse.m2e</groupId>
+      <artifactId>lifecycle-mapping</artifactId>
+      <version>1.0.0</version>
+      
+      <configuration>
+        <lifecycleMappingMetadata>
+          <pluginExecutions>
+            <pluginExecution>
+              <pluginExecutionFilter>
+                <groupId>org.datanucleus</groupId>
+                <artifactId>maven-datanucleus-plugin</artifactId>
+                <versionRange>${datanucleus.jpa.version}</versionRange>
+              
+                <goals>
+                  <goal>enhance</goal>
+                </goals>
+              </pluginExecutionFilter>
+
+              <action>
+                <execute >
+                  <runOnIncremental>false</runOnIncremental>
+                </execute >
+              </action>
+            </pluginExecution>
+          </pluginExecutions>
+        </lifecycleMappingMetadata>
+      </configuration>
+    </plugin>
+      
+      
+      <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archiveClasses>true</archiveClasses>
+                    <webResources>
+                        <!-- in order to interpolate version from pom into appengine-web.xml -->
+                        <resource>
+                            <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                            <filtering>true</filtering>
+                            <targetPath>WEB-INF</targetPath>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+      
+      
+      
     </plugins>
+    </pluginManagement>
   </build>
 </project>
